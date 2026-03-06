@@ -74,9 +74,9 @@ $global_meta_keys = get_setting($conn, 'meta_keywords');
 $global_meta_author = get_setting($conn, 'meta_author');
 // Dinamis menentukan Domain (apakah berjalan di Vercel atau Localhost)
 $db_domain = get_setting($conn, 'domain');
-if (isset($_SERVER['HTTP_HOST']) && (strpos($_SERVER['HTTP_HOST'], 'vercel.app') !== false || getenv('VERCEL'))) {
-    $protocol = (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) ? $_SERVER['HTTP_X_FORWARDED_PROTO'] : 'https');
-    $domain = $protocol . '://' . $_SERVER['HTTP_HOST'];
+// Jika host DB bukan localhost, berarti kita sedang live di internet (Vercel dsb)
+if ($host !== 'localhost' && $host !== '127.0.0.1') {
+    $domain = ''; // Jadikan link absolut menjadi URL relatif (cth: /berita, /profil)
 } else {
     $domain = rtrim($db_domain, '/');
 }
