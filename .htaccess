@@ -6,7 +6,14 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^berita/([a-zA-Z0-9-]+)$ detail-berita.php?slug=$1 [L]
 RewriteRule ^berita/?$ berita.php [L]
 RewriteRule ^umkm/([a-zA-Z0-9-]+)$ detail-umkm.php?slug=$1 [L]
+RewriteRule ^umkm/?$ umkm.php [L]
 RewriteRule ^layanan/([a-zA-Z0-9-]+)$ detail-layanan.php?slug=$1 [L]
+RewriteRule ^layanan/?$ layanan.php [L]
+RewriteRule ^galeri/?$ galeri.php [L]
+RewriteRule ^aparatur/?$ pegawai.php [L]
+RewriteRule ^profil/?$ profil.php [L]
+RewriteRule ^kontak/?$ kontak.php [L]
+RewriteRule ^faq/?$ faq.php [L]
 RewriteRule ^sitemap\.xml$ sitemap.php [L]
 
 # File caching

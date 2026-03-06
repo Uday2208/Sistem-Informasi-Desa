@@ -1,0 +1,100 @@
+{
+    "functions": {
+        "api/**/*.php": {
+            "runtime": "vercel-php@0.6.2"
+        },
+        "**/*.php": {
+            "runtime": "vercel-php@0.6.2"
+        }
+    },
+    "rewrites": [
+        {
+            "source": "/berita/([^/]+)",
+            "destination": "/detail-berita.php?slug=$1"
+        },
+        {
+            "source": "/berita",
+            "destination": "/berita.php"
+        },
+        {
+            "source": "/berita/",
+            "destination": "/berita.php"
+        },
+        {
+            "source": "/umkm/([^/]+)",
+            "destination": "/detail-umkm.php?slug=$1"
+        },
+        {
+            "source": "/umkm",
+            "destination": "/umkm.php"
+        },
+        {
+            "source": "/umkm/",
+            "destination": "/umkm.php"
+        },
+        {
+            "source": "/layanan/([^/]+)",
+            "destination": "/detail-layanan.php?slug=$1"
+        },
+        {
+            "source": "/layanan",
+            "destination": "/layanan.php"
+        },
+        {
+            "source": "/layanan/",
+            "destination": "/layanan.php"
+        },
+        {
+            "source": "/galeri",
+            "destination": "/galeri.php"
+        },
+        {
+            "source": "/galeri/",
+            "destination": "/galeri.php"
+        },
+        {
+            "source": "/aparatur",
+            "destination": "/pegawai.php"
+        },
+        {
+            "source": "/aparatur/",
+            "destination": "/pegawai.php"
+        },
+        {
+            "source": "/profil",
+            "destination": "/profil.php"
+        },
+        {
+            "source": "/profil/",
+            "destination": "/profil.php"
+        },
+        {
+            "source": "/kontak",
+            "destination": "/kontak.php"
+        },
+        {
+            "source": "/kontak/",
+            "destination": "/kontak.php"
+        },
+        {
+            "source": "/faq",
+            "destination": "/faq.php"
+        },
+        {
+            "source": "/faq/",
+            "destination": "/faq.php"
+        },
+        {
+            "source": "/sitemap.xml",
+            "destination": "/sitemap.php"
+        },
+        {
+            "source": "/admin",
+            "destination": "/admin/index.php"
+        },
+        {
+            "source": "/admin/",
+            "destination": "/admin/index.php"
+        }
+    ]
+}

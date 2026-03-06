@@ -13,8 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($slug))
         $slug = create_slug($title);
     $content = $_POST['content'];
-    $meta_title = !empty($_POST['meta_title']) ? $_POST['meta_title'] : $title;
-    $meta_description = $_POST['meta_description'];
+    $meta_title = "";
+    $meta_description = "";
 
     $meta_image = $berita['meta_image'];
     if (isset($_FILES['meta_image']) && $_FILES['meta_image']['error'] == 0) {
@@ -22,8 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         move_uploaded_file($_FILES['meta_image']['tmp_name'], "../uploads/" . $meta_image);
     }
 
-    $stmt2 = $conn->prepare("UPDATE berita SET title=?, slug=?, content=?, meta_title=?, meta_description=?, meta_image=? WHERE id=?");
-    $stmt2->bind_param("ssssssi", $title, $slug, $content, $meta_title, $meta_description, $meta_image, $id);
+    $is_running_text = isset($_POST['is_running_text']) ? 1 : 0;
+
+    $stmt2 = $conn->prepare("UPDATE berita SET title=?, slug=?, content=?, meta_title=?, meta_description=?, meta_image=?, is_running_text=? WHERE id=?");
+    $stmt2->bind_param("ssssssii", $title, $slug, $content, $meta_title, $meta_description, $meta_image, $is_running_text, $id);
 
     if ($stmt2->execute()) {
         header("Location: berita.php");
@@ -70,59 +72,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
 
         <div class="col-md-4">
-            <div class="card shadow-sm mb-4 border-primary">
-                <div class="card-header bg-primary text-white fw-bold">SEO & Metadata</div>
-                <div class="card-body bg-light">
+            <div class="card shadow-sm mb-4 border-0">
+                <div class="card-body bg-light rounded">
                     <div class="mb-3">
-                        <label class="fw-bold"><small>Meta Title</small></label>
-                        <input type="text" name="meta_title" class="form-control form-control-sm"
-                            value="<?= htmlspecialchars($berita['meta_title']) ?>">
-                    </div>
-                    <div class="mb-3">
-                        <label class="fw-bold"><small>Meta Description</small></label>
-                        <textarea name="meta_description" class="form-control form-control-sm" rows="4"
-                            required><?= htmlspecialchars($berita['meta_description']) ?></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label class="fw-bold"><small>Open Graph Image</small></label>
+                        <label class="fw-bold">Thumbnail Berita</label>
                         <?php if ($berita['meta_image']): ?>
                             <div class="mb-2 text-center bg-white p-2 border rounded">
                                 <img src="<?= $domain ?>/uploads/<?= htmlspecialchars($berita['meta_image']) ?>"
                                     class="img-fluid rounded" style="max-height: 120px;">
                             </div>
                         <?php endif; ?>
-                        <input type="file" name="meta_image" class="form-control form-control-sm" accept="image/*">
+                        <input type="file" name="meta_image" class="form-control" accept="image/*">
                         <small class="text-muted d-block mt-1" style="font-size: 0.75rem;">Timpa gambar dengan upload
                             file baru. Biarkan kosong jika tidak ingin mengubah.</small>
                     </div>
 
-                    <hr>
-                    <button type="submit" class="btn btn-primary w-100 fw-bold py-2 shadow-sm">Update Berita
-                        SEO</button>
-                </div>
-            </div>
-
-            <div class="card shadow-sm border-0 mt-3 sticky-top" style="top: 20px;">
-                <div class="card-header bg-dark text-white fw-bold"><small>Preview Snippet Pencarian Google</small>
-                </div>
-                <div class="card-body">
-                    <div class="google-snippet" style="font-family: Arial, sans-serif;">
-                        <cite
-                            style="color: #202124; font-size: 14px; font-style: normal; display: block; margin-bottom: 2px;">
-                            <?= htmlspecialchars(get_setting($conn, 'domain')) ?> > berita >
-                            <?= htmlspecialchars($berita['slug']) ?>
-                        </cite>
-                        <h3
-                            style="color: #1a0dab; font-size: 20px; font-weight: 400; margin: 0 0 3px 0; padding: 0; line-height:1.2;">
-                            <?= htmlspecialchars($berita['meta_title']) ?>
-                        </h3>
-                        <p style="color: #4d5156; font-size: 14px; line-height: 1.58; margin: 0;">
-                            <?= htmlspecialchars($berita['meta_description']) ?>
-                        </p>
+                    <div class="mb-3 form-check form-switch mt-3 pt-2 border-top">
+                        <input class="form-check-input" type="checkbox" role="switch" id="isRunningText"
+                            name="is_running_text" value="1" <?= isset($berita['is_running_text']) && $berita['is_running_text'] == 1 ? 'checked' : '' ?>>
+                        <label class="form-check-label fw-bold fw-bold" for="isRunningText"><small>Jadikan Running Text
+                                (Pengumuman)</small></label>
+                        <small class="text-muted d-block" style="font-size: 0.75rem;">Judul postingan ini akan tampil
+                            bergulir di bagian atas Beranda publik situs Anda.</small>
                     </div>
+
+                    <hr>
+                    <button type="submit" class="btn btn-primary w-100 fw-bold py-2 shadow-sm">Update Berita</button>
                 </div>
             </div>
-
         </div>
     </div>
 </form>
@@ -147,10 +124,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     });
 
     var form = document.getElementById('form-berita');
-    form.onsubmit = function () {
-        var content = document.querySelector('input[name=content]');
+    form.addEventListener('submit', function () {
+        var content = document.getElementById('content');
         content.value = quill.root.innerHTML;
-    };
+    });
 </script>
 
 <?php require_once "footer.php"; ?>

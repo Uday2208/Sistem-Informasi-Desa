@@ -78,9 +78,11 @@ require_once "header.php";
             <p class="text-muted"><small>Diterbitkan pada:
                     <?= date("d M Y", strtotime($berita['created_at'])) ?>
                 </small></p>
-            <?php if ($berita['meta_image']): ?>
-                <img src="<?= $domain ?>/uploads/<?= htmlspecialchars($berita['meta_image']) ?>"
-                    class="img-fluid mb-4 rounded w-100" alt="<?= htmlspecialchars($berita['title']) ?>" loading="lazy">
+            <?php if ($berita['meta_image']):
+                $img_src = filter_var($berita['meta_image'], FILTER_VALIDATE_URL) ? $berita['meta_image'] : $domain . '/uploads/' . $berita['meta_image'];
+                ?>
+                <img src="<?= htmlspecialchars($img_src) ?>" class="img-fluid mb-4 rounded w-100"
+                    alt="<?= htmlspecialchars($berita['title']) ?>" loading="lazy">
             <?php endif; ?>
             <div class="content lh-lg">
                 <?= $berita['content'] ?>

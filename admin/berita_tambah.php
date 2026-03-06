@@ -7,8 +7,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($slug))
         $slug = create_slug($title);
     $content = $_POST['content'];
-    $meta_title = !empty($_POST['meta_title']) ? $_POST['meta_title'] : $title;
-    $meta_description = $_POST['meta_description'];
+    $meta_title = "";
+    $meta_description = "";
 
     $meta_image = "";
     if (isset($_FILES['meta_image']) && $_FILES['meta_image']['error'] == 0) {
@@ -16,8 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         move_uploaded_file($_FILES['meta_image']['tmp_name'], "../uploads/" . $meta_image);
     }
 
-    $stmt = $conn->prepare("INSERT INTO berita (title, slug, content, meta_title, meta_description, meta_image) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssss", $title, $slug, $content, $meta_title, $meta_description, $meta_image);
+    $is_running_text = isset($_POST['is_running_text']) ? 1 : 0;
+
+    $stmt = $conn->prepare("INSERT INTO berita (title, slug, content, meta_title, meta_description, meta_image, is_running_text) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssssi", $title, $slug, $content, $meta_title, $meta_description, $meta_image, $is_running_text);
 
     if ($stmt->execute()) {
         header("Location: berita.php");
@@ -45,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <input type="text" name="title" id="title" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label class="fw-bold">Slug URL (SEO Friendly)</label>
+                        <label class="fw-bold">Slug URL</label>
                         <input type="text" name="slug" id="slug" class="form-control"
                             placeholder="Biarkan kosong untuk generate otomatis dari judul">
                         <small class="text-muted">Gunakan huruf kecil dan strip (contoh: berita-desa-terbaru)</small>
@@ -60,26 +62,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
 
         <div class="col-md-4">
-            <div class="card shadow-sm mb-4 border-primary">
-                <div class="card-header bg-primary text-white fw-bold">Optimasi SEO Halaman</div>
-                <div class="card-body bg-light">
+            <div class="card shadow-sm mb-4 border-0">
+                <div class="card-body bg-light rounded">
                     <div class="mb-3">
-                        <label class="fw-bold"><small>1. Meta Title (Max 60 Karakter)</small></label>
-                        <input type="text" name="meta_title" class="form-control form-control-sm"
-                            placeholder="Otomatis dari Judul Berita jika kosong">
+                        <label class="fw-bold">Thumbnail Berita</label>
+                        <input type="file" name="meta_image" class="form-control" accept="image/*">
+                        <small class="text-muted d-block mt-1" style="font-size: 0.75rem;">Rekomendasi ukuran <
+                                300KB.</small>
                     </div>
-                    <div class="mb-3">
-                        <label class="fw-bold"><small>2. Meta Description (Max 160 Karakter)</small></label>
-                        <textarea name="meta_description" class="form-control form-control-sm" rows="4" required
-                            placeholder="Deskripsi ringkas yang menarik klik di hasil pencarian Google"></textarea>
+                    <div class="mb-3 form-check form-switch mt-3 pt-2 border-top">
+                        <input class="form-check-input" type="checkbox" role="switch" id="isRunningText"
+                            name="is_running_text" value="1">
+                        <label class="form-check-label fw-bold fw-bold" for="isRunningText"><small>Jadikan Running Text
+                                (Pengumuman)</small></label>
+                        <small class="text-muted d-block" style="font-size: 0.75rem;">Judul postingan ini akan tampil
+                            bergulir di bagian atas Beranda publik situs Anda.</small>
                     </div>
-                    <div class="mb-3">
-                        <label class="fw-bold"><small>3. Open Graph Image (Thumbnail Web / WA)</small></label>
-                        <input type="file" name="meta_image" class="form-control form-control-sm" accept="image/*">
-                        <small class="text-muted d-block mt-1" style="font-size: 0.75rem;">Rekomendasi rasio 16:9,
-                            ukuran gambar sebaiknya < 300KB agar loading cepat.</small>
-                    </div>
-
                     <hr>
                     <button type="submit" class="btn btn-primary w-100 fw-bold py-2 shadow-sm">Simpan &
                         Publikasikan</button>
@@ -110,10 +108,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     });
 
     var form = document.getElementById('form-berita');
-    form.onsubmit = function () {
-        var content = document.querySelector('input[name=content]');
+    form.addEventListener('submit', function () {
+        var content = document.getElementById('content');
         content.value = quill.root.innerHTML;
-    };
+    });
 </script>
 
 <?php require_once "footer.php"; ?>

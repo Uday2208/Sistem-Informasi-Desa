@@ -55,3 +55,46 @@ CREATE TABLE `layanan` (
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 );
+
+CREATE TABLE `galeri` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `pegawai` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nama` varchar(255) NOT NULL,
+  `jabatan` varchar(255) NOT NULL,
+  `foto` varchar(255) NOT NULL,
+  `urutan` int(11) DEFAULT 0,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `banners` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `subtitle` text,
+  `image` varchar(255) NOT NULL,
+  `link` varchar(255) DEFAULT NULL,
+  `urutan` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `pengumuman` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `teks` text NOT NULL,
+  `is_active` tinyint(1) DEFAULT 1,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `faq` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pertanyaan` varchar(255) NOT NULL,
+  `jawaban` text NOT NULL,
+  `urutan` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+);
