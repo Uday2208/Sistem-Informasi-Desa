@@ -11,7 +11,12 @@ $port = getenv('DB_PORT') ?: "3306";
 try {
     // Vercel / serverless workaround: force TCP instead of unix socket for 'localhost' fallback
     $connect_host = ($host === 'localhost') ? '127.0.0.1' : $host;
-    $conn = new mysqli($connect_host, $user, $pass, $db, (int) $port);
+
+    $conn = mysqli_init();
+    // Konfigurasi ini sangat penting untuk mendukung Aiven yang mewajibkan mode SSL (REQUIRED)
+    $conn->ssl_set(NULL, NULL, NULL, NULL, NULL);
+    $conn->real_connect($connect_host, $user, $pass, $db, (int) $port, null, MYSQLI_CLIENT_SSL);
+
     if ($conn->connect_error) {
         throw new Exception("Connection failed: " . $conn->connect_error);
     }
