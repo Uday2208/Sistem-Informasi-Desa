@@ -72,7 +72,15 @@ $site_title = get_setting($conn, 'site_title');
 $global_meta_desc = get_setting($conn, 'meta_description');
 $global_meta_keys = get_setting($conn, 'meta_keywords');
 $global_meta_author = get_setting($conn, 'meta_author');
-$domain = get_setting($conn, 'domain');
+// Dinamis menentukan Domain (apakah berjalan di Vercel atau Localhost)
+$db_domain = get_setting($conn, 'domain');
+if (isset($_SERVER['HTTP_HOST']) && (strpos($_SERVER['HTTP_HOST'], 'vercel.app') !== false || getenv('VERCEL'))) {
+    $protocol = (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) ? $_SERVER['HTTP_X_FORWARDED_PROTO'] : 'https');
+    $domain = $protocol . '://' . $_SERVER['HTTP_HOST'];
+} else {
+    $domain = rtrim($db_domain, '/');
+}
+
 $favicon = get_setting($conn, 'favicon');
 $logo = get_setting($conn, 'logo');
 ?>
