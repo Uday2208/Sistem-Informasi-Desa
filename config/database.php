@@ -8,9 +8,18 @@ $pass = getenv('DB_PASS') ?: "";
 $db = getenv('DB_NAME') ?: "sid_premium";
 $port = getenv('DB_PORT') ?: "3306";
 
-$conn = new mysqli($host, $user, $pass, $db, (int) $port);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+try {
+    // Vercel / serverless workaround: force TCP instead of unix socket for 'localhost' fallback
+    $connect_host = ($host === 'localhost') ? '127.0.0.1' : $host;
+    $conn = new mysqli($connect_host, $user, $pass, $db, (int) $port);
+    if ($conn->connect_error) {
+        throw new Exception("Connection failed: " . $conn->connect_error);
+    }
+} catch (Exception $e) {
+    die("<h1>Database Connection Failed / Belum Dikonfigurasi</h1>
+         <p>Sepertinya Environment Variables (DB_HOST, dsb) belum diatur di Vercel.</p>
+         <p>Error Detail: " . htmlspecialchars($e->getMessage()) . "</p>
+         <p>Silahkan atur <strong>DB_HOST, DB_USER, DB_PASS, DB_NAME</strong> di pengaturan Vercel -> Settings -> Environment Variables, lalu deploy ulang.</p>");
 }
 
 // Function to get setting
