@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once "../config/database.php";
-require_once "../config/helpers.php";
+require_once __DIR__ . "/../config/database.php";
+require_once __DIR__ . "/../config/helpers.php";
 
 if (!isset($_SESSION['admin'])) {
     header("Location: login.php");
