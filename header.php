@@ -67,7 +67,7 @@ $meta_title = isset($page_title) ? $page_title . " - " . $site_title : $site_tit
                     <li class="nav-item"><a class="nav-link" href="<?= $domain ?>/kontak"><i
                                 class="fas fa-envelope me-2 d-lg-none"></i>Kontak</a></li>
                     <li class="nav-item ms-lg-3 mt-3 mt-lg-0"><a class="btn btn-modern btn-primary-modern w-100"
-                            href="<?= $domain ?>/admin"><i class="fas fa-sign-in-alt me-1"></i> Admin</a></li>
+                            href="<?= $domain ?>/admin/index.php"><i class="fas fa-sign-in-alt me-1"></i> Admin</a></li>
                 </ul>
             </div>
         </div>

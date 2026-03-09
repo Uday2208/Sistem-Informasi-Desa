@@ -93,14 +93,18 @@
         {
             "source": "/sitemap.xml",
             "destination": "/sitemap.php"
-        },
+        }
+    ],
+    "redirects": [
         {
             "source": "/admin",
-            "destination": "/admin/index.php"
+            "destination": "/admin/index.php",
+            "permanent": false
         },
         {
             "source": "/admin/",
-            "destination": "/admin/index.php"
+            "destination": "/admin/index.php",
+            "permanent": false
         }
     ]
 }
