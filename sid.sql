@@ -34,6 +34,7 @@ CREATE TABLE `berita` (
   `meta_title` varchar(255),
   `meta_description` text,
   `meta_image` varchar(255),
+  `is_running_text` tinyint(1) DEFAULT 0,
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 );

@@ -23,32 +23,40 @@ $page_meta_desc = "Katalog Usaha Mikro Kecil dan Menengah (UMKM) unggulan dari "
     <div class="row g-4 justify-content-center">
         <?php
         $stmt = $conn->query("SELECT * FROM umkm ORDER BY id DESC");
-        while ($row = $stmt->fetch_assoc()):
-            $img_src = "https://picsum.photos/seed/" . md5($row['slug']) . "/800/600";
-            ?>
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card card-modern h-100">
-                    <div class="overflow-hidden">
-                        <img src="<?= htmlspecialchars($img_src) ?>" class="card-img-top card-img-modern"
-                            alt="<?= htmlspecialchars($row['nama']) ?>" loading="lazy"
-                            style="height:240px; object-fit:cover;">
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title text-dark fw-bold brand-font mb-3">
-                            <?= htmlspecialchars($row['nama']) ?>
-                        </h5>
-                        <p class="card-text text-muted mb-0">
-                            <?= htmlspecialchars(substr($row['deskripsi'], 0, 90)) ?>...
-                        </p>
-                    </div>
-                    <div class="card-footer bg-white border-0 p-4 pt-0">
-                        <a href="<?= $domain ?>/umkm/<?= $row['slug'] ?>"
-                            class="text-primary text-decoration-none fw-semibold">Detail Usaha <i
-                                class="fas fa-chevron-right ms-1 fs-6"></i></a>
+        if ($stmt && $stmt->num_rows > 0):
+            while ($row = $stmt->fetch_assoc()):
+                $img_src = "https://picsum.photos/seed/" . md5($row['slug']) . "/800/600";
+                ?>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card card-modern h-100">
+                        <div class="overflow-hidden">
+                            <img src="<?= htmlspecialchars($img_src) ?>" class="card-img-top card-img-modern"
+                                alt="<?= htmlspecialchars($row['nama']) ?>" loading="lazy"
+                                style="height:240px; object-fit:cover;">
+                        </div>
+                        <div class="card-body p-4">
+                            <h5 class="card-title text-dark fw-bold brand-font mb-3">
+                                <?= htmlspecialchars($row['nama']) ?>
+                            </h5>
+                            <p class="card-text text-muted mb-0">
+                                <?= htmlspecialchars(substr($row['deskripsi'], 0, 90)) ?>...
+                            </p>
+                        </div>
+                        <div class="card-footer bg-white border-0 p-4 pt-0">
+                            <a href="<?= $domain ?>/umkm/<?= $row['slug'] ?>"
+                                class="text-primary text-decoration-none fw-semibold">Detail Usaha <i
+                                    class="fas fa-chevron-right ms-1 fs-6"></i></a>
+                        </div>
                     </div>
                 </div>
+            <?php endwhile; ?>
+        <?php else: ?>
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-box-open fs-1 text-muted mb-3 d-block"></i>
+                <h5 class="text-muted fw-bold">Belum Ada Data UMKM</h5>
+                <p class="text-muted mb-0">Saat ini belum ada data UMKM yang tersedia.</p>
             </div>
-        <?php endwhile; ?>
+        <?php endif; ?>
     </div>
 </div>
 <?php require_once "footer.php"; ?>
