@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $image = "";
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
         $image = time() . "_" . $_FILES['image']['name'];
-        move_uploaded_file($_FILES['image']['tmp_name'], "../uploads/" . $image);
+        handle_upload($_FILES['image']['tmp_name'], $image);
 
         $stmt = $conn->prepare("INSERT INTO banners (title, subtitle, image, link, urutan) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("ssssi", $title, $subtitle, $image, $link, $urutan);

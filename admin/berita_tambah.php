@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $meta_image = "";
     if (isset($_FILES['meta_image']) && $_FILES['meta_image']['error'] == 0) {
         $meta_image = time() . "_" . $_FILES['meta_image']['name'];
-        move_uploaded_file($_FILES['meta_image']['tmp_name'], "../uploads/" . $meta_image);
+        handle_upload($_FILES['meta_image']['tmp_name'], $meta_image);
     }
 
     $is_running_text = isset($_POST['is_running_text']) ? 1 : 0;

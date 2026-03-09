@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $foto = "";
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
         $foto = time() . "_" . $_FILES['foto']['name'];
-        move_uploaded_file($_FILES['foto']['tmp_name'], "../uploads/" . $foto);
+        handle_upload($_FILES['foto']['tmp_name'], $foto);
     }
 
     $stmt = $conn->prepare("INSERT INTO pegawai (nama, jabatan, foto, urutan) VALUES (?, ?, ?, ?)");

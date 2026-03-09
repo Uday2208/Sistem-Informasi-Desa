@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $new_filename = 'logo_' . time() . '.' . $ext;
             $upload_path = '../uploads/' . $new_filename;
             
-            if (move_uploaded_file($_FILES['logo']['tmp_name'], $upload_path)) {
+            if (handle_upload($_FILES['logo']['tmp_name'], $new_filename)) {
                 $stmt = $conn->prepare("UPDATE settings SET value = ? WHERE key_name = 'logo'");
                 $stmt->bind_param("s", $new_filename);
                 $stmt->execute();
