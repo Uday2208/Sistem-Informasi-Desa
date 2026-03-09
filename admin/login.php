@@ -14,6 +14,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
         $_SESSION['admin'] = $user['id'];
+
+        // Vercel serverless session workaround
+        setcookie('admin_session', $user['id'], time() + (86400 * 30), "/");
+
         header("Location: index.php");
         exit;
     } else {

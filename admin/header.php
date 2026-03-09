@@ -3,6 +3,11 @@ session_start();
 require_once __DIR__ . "/../config/database.php";
 require_once __DIR__ . "/../config/helpers.php";
 
+// Vercel serverless session workaround
+if (!isset($_SESSION['admin']) && isset($_COOKIE['admin_session'])) {
+    $_SESSION['admin'] = $_COOKIE['admin_session'];
+}
+
 if (!isset($_SESSION['admin'])) {
     header("Location: login.php");
     exit;
